@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
+import Chessboard from 'chessboardjsx';
+import ChessLogic from './ChessLogic';
+
 import '../styles/main.scss';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { string: '' };
-  }
-
-  componentDidMount() {
-    fetch('/api/hello')
-      .then(res => res.json())
-      .then((result) => {
-        console.log(result);
-        this.setState({ string: result.string });
-      });
+    this.state = {};
   }
 
   render() {
-    const { string } = this.state;
-
     return (
       <div>
-        <p>{string}</p>
+        <ChessLogic>
+          {({ position, selectedSquares, onDrop }) => (
+            <Chessboard
+              id="chessBoard"
+              width={320}
+              position={position}
+              selectedSquares={selectedSquares}
+              onDrop={onDrop}
+            />
+          )}
+        </ChessLogic>
       </div>
     );
   }

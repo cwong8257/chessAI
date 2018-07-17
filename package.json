@@ -13,12 +13,16 @@
   "author": "Christopher Wong",
   "license": "ISC",
   "dependencies": {
+    "chess.js": "^0.10.2",
+    "chessboardjsx": "^1.0.9",
     "express": "^4.16.3",
+    "prop-types": "^15.6.2",
     "react": "^16.3.1",
     "react-dom": "^16.3.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
