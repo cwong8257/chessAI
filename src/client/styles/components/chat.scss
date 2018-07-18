@@ -1,0 +1,49 @@
+.chat {
+  width: 50rem;
+  font-size: 1.6rem;
+
+  &__messages {
+    height: 92%;
+    overflow-y: scroll;
+    list-style: none;
+    padding: 1rem;
+  }
+
+  &__form {
+    display: flex;
+    height: 8%;
+  }
+
+  &__input-box {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    font-size: 1.6rem;
+  }
+
+  &__input-btn {
+    padding: 0.5rem 1rem;
+    background-color: purple;
+    border: none;
+    color: white;
+    font-weight: 600;
+  }
+
+  &__message {
+    margin-bottom: 0.6rem;
+
+    &-user {
+      display: inline-block;
+      font-weight: 700;
+      margin-right: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    &-time {
+      color: grey;
+    }
+
+    &-content {
+      display: block;
+    }
+  }
+}

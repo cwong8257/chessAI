@@ -10,16 +10,19 @@ class ChatInput extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+    const { value } = this.state;
     const { socket } = this.props;
-    socket.emit('message', { message: e.target.value });
+    socket.emit('message', value);
     this.setState({ value: '' });
   };
 
   render() {
+    const { value } = this.state;
+
     return (
-      <form onSubmit={this.onSubmit}>
-        <input type="text" value={this.value} onChange={this.onChange} />
-        <input type="submit" value="Submit" />
+      <form className="chat__form" onSubmit={this.onSubmit}>
+        <input className="chat__input-box" type="text" value={value} onChange={this.onChange} />
+        <input className="chat__input-btn" type="submit" value="Submit" />
       </form>
     );
   }

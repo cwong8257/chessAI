@@ -2,34 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
-import socketIO from 'socket.io-client';
 
 const game = new Chess();
 
 class HumanVsHuman extends React.Component {
-  static propTypes = {};
+  // static propTypes = { socket: PropTypes.objectOf };
 
-  state = { game, fen: 'start' };
+  constructor(props) {
+    super(props);
+    this.state = { game, fen: 'start' };
+  }
 
   componentDidMount() {
-    const socket = socketIO.connect('http://localhost:8080');
+    const { socket } = this.props;
+
     socket.on('move', (opponent) => {
-      console.log(opponent);
       game.load_pgn(opponent.pgn);
       this.setState({ game, fen: opponent.fen });
     });
-    this.setState({ socket });
   }
 
   onDrop = (source, target) => {
-    // see if the move is legal
     const move = game.move({
       from: source,
       to: target,
       promotion: 'q',
     });
 
-    // illegal move
     if (move === null) return;
 
     const fen = game.fen();
@@ -39,14 +38,14 @@ class HumanVsHuman extends React.Component {
   };
 
   broadcastMove = (gameState) => {
-    const { socket } = this.state;
+    const { socket } = this.props;
     socket.emit('move', gameState);
   };
 
   render() {
     const { fen } = this.state;
 
-    return <Chessboard id="chessBoard" width={320} position={fen} onDrop={this.onDrop} />;
+    return <Chessboard id="chessBoard" width={400} position={fen} onDrop={this.onDrop} />;
   }
 }
 

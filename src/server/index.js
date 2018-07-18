@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const moment = require('moment');
 
 const app = express();
 const server = http.Server(app);
@@ -15,8 +16,17 @@ io.on('connection', (socket) => {
 
   socket.on('move', (gameState) => {
     socket.to('game').emit('move', gameState);
-    socket.on('disconnect', () => {
-      console.log('disconnected');
+  });
+
+  socket.on('message', (message) => {
+    io.to('game').emit('message', {
+      user: 'User',
+      time: moment().format('h:mm a'),
+      content: message,
     });
+  });
+
+  socket.on('disconnect', () => {
+    console.log('disconnected');
   });
 });
