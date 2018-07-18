@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Chessboard from 'chessboardjsx';
+
 import ChessLogic from './ChessLogic';
+import Chat from './Chat';
 
 import '../styles/main.scss';
 
@@ -12,18 +13,9 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <ChessLogic>
-          {({ position, selectedSquares, onDrop }) => (
-            <Chessboard
-              id="chessBoard"
-              width={320}
-              position={position}
-              selectedSquares={selectedSquares}
-              onDrop={onDrop}
-            />
-          )}
-        </ChessLogic>
+      <div className="app">
+        <ChessLogic />
+        <Chat />
       </div>
     );
   }
