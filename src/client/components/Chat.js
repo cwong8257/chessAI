@@ -3,7 +3,7 @@ import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
 
 class Chat extends React.Component {
-  state = { messages: [] };
+  state = { user: 'anonymous', messages: [] };
 
   componentDidMount() {
     const { socket } = this.props;
@@ -18,13 +18,13 @@ class Chat extends React.Component {
   }
 
   render() {
-    const { messages } = this.state;
+    const { messages, user } = this.state;
     const { socket } = this.props;
 
     return (
       <div className="chat">
         <ChatMessages messages={messages} />
-        <ChatInput socket={socket} handleSubmit={this.handleSubmit} />
+        <ChatInput user={user} socket={socket} handleSubmit={this.handleSubmit} />
       </div>
     );
   }

@@ -18,11 +18,11 @@ io.on('connection', (socket) => {
     socket.to('game').emit('move', gameState);
   });
 
-  socket.on('message', (message) => {
+  socket.on('message', ({ user, content }) => {
     io.to('game').emit('message', {
-      user: 'User',
+      user,
       time: moment().format('h:mm a'),
-      content: message,
+      content,
     });
   });
 

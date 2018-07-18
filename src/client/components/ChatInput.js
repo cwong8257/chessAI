@@ -1,27 +1,26 @@
 import React from 'react';
 
 class ChatInput extends React.Component {
-  state = { value: '' };
+  state = { content: '' };
 
   onChange = (e) => {
-    console.log(e.target.value);
-    this.setState({ value: e.target.value });
+    this.setState({ content: e.target.value });
   };
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { value } = this.state;
-    const { socket } = this.props;
-    socket.emit('message', value);
-    this.setState({ value: '' });
+    const { content } = this.state;
+    const { socket, user } = this.props;
+    socket.emit('message', { user, content });
+    this.setState({ content: '' });
   };
 
   render() {
-    const { value } = this.state;
+    const { content } = this.state;
 
     return (
       <form className="chat__form" onSubmit={this.onSubmit}>
-        <input className="chat__input-box" type="text" value={value} onChange={this.onChange} />
+        <input className="chat__input-box" type="text" value={content} onChange={this.onChange} />
         <input className="chat__input-btn" type="submit" value="Submit" />
       </form>
     );
