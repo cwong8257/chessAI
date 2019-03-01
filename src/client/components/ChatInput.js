@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { socketService } from '../services/socket-service';
+
+
 class ChatInput extends React.Component {
   state = { content: '' };
 
@@ -10,8 +13,8 @@ class ChatInput extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { content } = this.state;
-    const { socket, user } = this.props;
-    socket.emit('message', { user, content });
+    const { user } = this.props;
+    socketService.socket.emit('message', { user, content });
     this.setState({ content: '' });
   };
 

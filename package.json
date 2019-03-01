@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "chess.js": "^0.10.2",
-    "chessboardjsx": "^1.0.9",
+    "chessboardjsx": "^2.3.0",
     "express": "^4.16.3",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",

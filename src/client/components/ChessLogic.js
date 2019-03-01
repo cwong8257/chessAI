@@ -1,52 +1,59 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 
+import { socketService } from '../services';
+import Engine from '../Engine';
+
 const game = new Chess();
+const engine = new Engine(game);
 
-class HumanVsHuman extends React.Component {
-  // static propTypes = { socket: PropTypes.objectOf };
-
-  constructor(props) {
-    super(props);
-    this.state = { game, fen: 'start' };
-  }
+class ChessLogic extends React.Component {
+  state = { fen: 'start' };
 
   componentDidMount() {
-    const { socket } = this.props;
-
-    socket.on('move', (opponent) => {
-      game.load_pgn(opponent.pgn);
-      this.setState({ game, fen: opponent.fen });
+    socketService.socket.on('move', (move) => {
+      game.move(move);
+      const fen = game.fen();
+      this.setState({ fen });
     });
   }
 
-  onDrop = (source, target) => {
+  calcWidth = ({ screenWidth, screenHeight }) => Math.min(screenWidth, screenHeight) * 2 / 3;
+
+  makeMove = () => {
+    const bestMove = engine.calculateBestMove();
+    game.move(bestMove);
+    const fen = game.fen();
+    this.setState({ fen });
+  }
+
+  onDrop = ({ sourceSquare, targetSquare }) => {
+    const { mode } = this.props;
+
     const move = game.move({
-      from: source,
-      to: target,
+      from: sourceSquare,
+      to: targetSquare,
       promotion: 'q',
     });
 
     if (move === null) return;
 
     const fen = game.fen();
-    const pgn = game.pgn();
-    this.broadcastMove({ pgn, fen });
-    this.setState({ game, fen });
-  };
 
-  broadcastMove = (gameState) => {
-    const { socket } = this.props;
-    socket.emit('move', gameState);
+    if (mode === 'human') {
+      socketService.makeMove(move);
+      this.setState({ fen });
+    } else {
+      this.makeMove();
+    }
   };
 
   render() {
     const { fen } = this.state;
 
-    return <Chessboard id="chessBoard" width={400} position={fen} onDrop={this.onDrop} />;
+    return <Chessboard id="chessBoard" calcWidth={this.calcWidth} position={fen} onDrop={this.onDrop} />;
   }
 }
 
-export default HumanVsHuman;
+export default ChessLogic;

@@ -7,12 +7,16 @@ const app = express();
 const server = http.Server(app);
 const io = socketIO(server);
 
+let userCount = 0;
+
 server.listen(8080);
 
 app.use(express.static('dist'));
 
 io.on('connection', (socket) => {
   socket.join('game');
+  userCount++;
+  console.log('connected', userCount);
 
   socket.on('move', (gameState) => {
     socket.to('game').emit('move', gameState);
@@ -27,6 +31,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('disconnected');
+    userCount--;
+    console.log('disconnected', userCount);
   });
 });
