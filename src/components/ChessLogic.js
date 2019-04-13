@@ -3,7 +3,7 @@ import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 
 import { socketService } from '../services';
-import Engine from '../Engine';
+import Engine from '../engine';
 
 const game = new Chess();
 const engine = new Engine(game);

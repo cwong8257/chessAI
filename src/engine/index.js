@@ -1,13 +1,6 @@
-const points = {
-  k: 1,
-  p: 1,
-  n: 3,
-  b: 3,
-  r: 5,
-  q: 9,
-};
+import POINTS from '../constants';
 
-export default class Engine {
+class Engine {
   constructor(game) {
     this.game = game;
   }
@@ -45,7 +38,7 @@ export default class Engine {
       if (piece === null) return;
 
       const { type, color } = piece;
-      const value = points[type];
+      const value = POINTS[type];
 
       if (color === 'w') {
         sum += value;
@@ -57,3 +50,5 @@ export default class Engine {
     return sum;
   }
 }
+
+export default Engine;
