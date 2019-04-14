@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ChessLogic from '../components/ChessLogic';
-import Chat from '../components/Chat';
+import ChessLogic from '../organisms/ChessLogic';
+import Chat from '../organisms/Chat';
 
 class Game extends React.Component {
   state = { mode: 'human' }

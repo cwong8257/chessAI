@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { socketService } from '../services/socket-service';
+import { socketService } from '../../services/socket-service';
 
 
 class ChatInput extends React.Component {

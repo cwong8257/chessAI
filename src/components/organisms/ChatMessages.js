@@ -1,5 +1,6 @@
 import React from 'react';
-import ChatMessage from './ChatMessage';
+
+import ChatMessage from '../molecules/ChatMessage';
 
 function ChatMessages({ messages }) {
   const messageEls = messages.map(message => <ChatMessage {...message} />);

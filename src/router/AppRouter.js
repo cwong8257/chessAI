@@ -1,15 +1,15 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
-import Home from '../pages/Home';
-import Game from '../pages/Game';
+import Home from '../components/pages/Home';
+import Game from '../components/pages/Game';
 
 function AppRouter() {
   return (
-    <Switch>
+    <div className="container">
       <Route exact path="/" component={Home} />
       <Route path="/game" component={Game} />
-    </Switch>
+    </div>
   );
 }
 

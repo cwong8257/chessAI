@@ -12,9 +12,14 @@ class Header extends React.Component {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
               <Link className="nav-link" href="/">Home</Link>
+            </li>
+          </ul>
+          <ul className="navbar-nav">
+            <li className="nav-item active">
+              <Link className="nav-link" href="/">Sign in</Link>
             </li>
           </ul>
         </div>

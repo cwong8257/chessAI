@@ -1,8 +1,8 @@
 import React from 'react';
-import ChatMessages from './ChatMessages';
-import ChatInput from './ChatInput';
 
-import { socketService } from '../services/socket-service';
+import ChatMessages from './ChatMessages';
+import ChatInput from '../molecules/ChatInput';
+import { socketService } from '../../services/socket-service';
 
 class Chat extends React.Component {
   state = { user: 'anonymous', messages: [] };
