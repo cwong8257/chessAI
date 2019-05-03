@@ -7,6 +7,5 @@ function makeMove(move) {
 }
 
 export const socketService = {
-  socket,
-  makeMove,
+  makeMove
 };
