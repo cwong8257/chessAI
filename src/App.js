@@ -6,7 +6,9 @@ import configureStore from './configureStore';
 import AppRouter from './router/AppRouter';
 import Header from './components/organisms/Header';
 
-const store = configureStore();
+const preloadedState = {};
+
+const store = configureStore(preloadedState);
 
 function App() {
   return (

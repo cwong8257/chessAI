@@ -10,6 +10,7 @@ class Engine {
     let bestMove;
     let bestEvaluation = Infinity;
     const moves = game.moves();
+    console.log(moves);
 
     for (let i = 0; i < moves.length; i++) {
       const move = moves[i];

@@ -6,6 +6,7 @@ function makeMove(move) {
   return socket.emit('move', move);
 }
 
-export const socketService = {
+export default {
+  socket,
   makeMove
 };

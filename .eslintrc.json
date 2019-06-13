@@ -12,6 +12,8 @@
     "no-plusplus": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-one-expression-per-line": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "no-shadow": "off",
+    "no-underscore-dangle": "off"
   }
 }

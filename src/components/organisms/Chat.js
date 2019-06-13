@@ -2,7 +2,7 @@ import React from 'react';
 
 import ChatMessages from './ChatMessages';
 import ChatInput from '../molecules/ChatInput';
-import { socketService } from '../../services/socket-service';
+import socketService from '../../services/socketService';
 
 class Chat extends React.Component {
   state = { user: 'anonymous', messages: [] };

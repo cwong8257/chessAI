@@ -19,7 +19,7 @@ class Game extends React.Component {
           <option value="human">Human</option>
           <option value="computer">Computer</option>
         </select>
-        <ChessLogic />
+        <ChessLogic mode={mode} />
         <Chat />
       </div>
     );

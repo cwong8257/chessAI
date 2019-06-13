@@ -2,7 +2,7 @@ import React from 'react';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 
-import { socketService } from '../../services';
+import socketService from '../../services/socketService';
 import Engine from '../../engine';
 
 const game = new Chess();
@@ -23,6 +23,7 @@ class ChessLogic extends React.Component {
 
   makeMove = () => {
     const bestMove = engine.calculateBestMove();
+    console.log(bestMove);
     game.move(bestMove);
     const fen = game.fen();
     this.setState({ fen });
@@ -36,6 +37,8 @@ class ChessLogic extends React.Component {
       to: targetSquare,
       promotion: 'q',
     });
+
+    console.log(move);
 
     if (move === null) return;
 

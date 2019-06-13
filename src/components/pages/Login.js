@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { loginUser } from '../../actions/authActions';
+
 class Login extends Component {
   state = {
     email: '',
-    password: '',
+    password: ''
   };
 
   handleOnChange = (e) => {
@@ -12,11 +14,14 @@ class Login extends Component {
     this.setState(() => ({ [name]: value }));
   };
 
-  handleSubmitForm = (e) => {
+  handleSubmitForm = async (e) => {
     e.preventDefault();
 
     const { email, password } = this.state;
-    console.log(`signed in with ${email} and ${password}`);
+    const { loginUser, authorization, history } = this.props;
+
+    await loginUser({ email, password });
+    history.push('/game');
   }
 
   render() {
@@ -44,6 +49,9 @@ class Login extends Component {
   }
 }
 
-// const mapDispatchToProps = { loginUser, clearErrors };
+const mapStateToProps = ({ authorization }) => ({
+  authorization
+});
+const mapDispatchToProps = { loginUser };
 
-export default connect()(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
