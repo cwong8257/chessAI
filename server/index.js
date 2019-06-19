@@ -8,12 +8,17 @@ const moment = require('moment');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const passport = require('passport');
 
 const userRoutes = require('./routes/api/users');
+const configurePassport = require('./config/passport');
 
 const app = express();
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/chessAI');
+
+app.use(passport.initialize());
+configurePassport(passport);
 
 app.use(cookieParser());
 app.use(bodyParser.json());
