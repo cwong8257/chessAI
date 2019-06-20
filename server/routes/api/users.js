@@ -37,10 +37,10 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      email: req.body.email
+    });
 
     if (!user) {
       const error = {
@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
       return res.status(404).json(error);
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
 
     if (!isMatch) {
       const error = {
@@ -60,8 +60,8 @@ router.post('/login', async (req, res) => {
       return res.status(400).json(error);
     }
 
-    const { id, name } = user;
-    const payload = { id, name };
+    const { username, firstName, lastName, email } = user;
+    const payload = { username, firstName, lastName, email };
     const token = jwt.sign(payload, process.env.SECRET_OR_PRIVATE_KEY, { expiresIn: 3600 });
 
     return res.json({ success: true, token: `Bearer ${token}` });

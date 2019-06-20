@@ -1,10 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { logoutUser } from '../../actions/authActions';
 
 class Header extends React.Component {
   state = {}
 
   render() {
+    const { username, logoutUser } = this.props;
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Link className="navbar-brand" to="/">ChessAI</Link>
@@ -19,7 +24,10 @@ class Header extends React.Component {
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item active">
-              <Link className="nav-link" to="/login">Sign in</Link>
+              {username
+                ? <button type="button" onClick={logoutUser}>{username}</button>
+                : <Link className="nav-link" to="/login">Sign in</Link>
+              }
             </li>
           </ul>
         </div>
@@ -28,5 +36,10 @@ class Header extends React.Component {
   }
 }
 
+const mapStateToProps = ({ user }) => ({
+  username: user.username
+});
+const mapDispatchToProps = { logoutUser };
 
-export default Header;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

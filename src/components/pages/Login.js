@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { loginUser } from '../../actions/authActions';
 
-class Login extends Component {
+class Login extends React.Component {
   state = {
     email: '',
     password: ''
@@ -18,10 +18,10 @@ class Login extends Component {
     e.preventDefault();
 
     const { email, password } = this.state;
-    const { loginUser, authorization, history } = this.props;
+    const { loginUser, history } = this.props;
 
     await loginUser({ email, password });
-    history.push('/game');
+    history.push('/home');
   }
 
   render() {
@@ -49,8 +49,8 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = ({ authorization }) => ({
-  authorization
+const mapStateToProps = ({ user }) => ({
+  user
 });
 const mapDispatchToProps = { loginUser };
 

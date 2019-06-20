@@ -1,5 +1,7 @@
+import jwtDecode from 'jwt-decode';
+
 import authService from '../services/authService';
-import setAuthorization from '../utils/setAuthorization';
+import setAuthorizationHeader from '../utils/setAuthorizationHeader';
 import { SET_CURRENT_USER } from './types';
 
 export const setCurrentUser = (user = {}) => ({
@@ -21,8 +23,9 @@ export const loginUser = ({ email, password }) => async (dispatch) => {
 
     if (!success) throw Error('Login failed');
 
-    setAuthorization(token);
-    dispatch(setCurrentUser(data));
+    setAuthorizationHeader(token);
+    const decoded = jwtDecode(token);
+    dispatch(setCurrentUser(decoded));
   } catch (error) {
     console.log(error);
   }
