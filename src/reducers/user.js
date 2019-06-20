@@ -7,6 +7,8 @@ export default (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
+    case 'CLEAR_CURRENT_USER':
+      return {};
     default:
       return state;
   }

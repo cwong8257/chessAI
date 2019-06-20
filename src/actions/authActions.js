@@ -2,15 +2,19 @@ import jwtDecode from 'jwt-decode';
 
 import authService from '../services/authService';
 import setAuthorizationHeader from '../utils/setAuthorizationHeader';
-import { SET_CURRENT_USER } from './types';
+import { CLEAR_CURRENT_USER, SET_CURRENT_USER } from './types';
 
 export const setCurrentUser = (user = {}) => ({
   type: SET_CURRENT_USER,
   payload: user
 });
 
+export const clearCurrentUser = () => ({
+  type: CLEAR_CURRENT_USER
+});
+
 /**
- * Attempt to login user.
+ * Login user.
  *
  * @param {Object} loginInfo
  * @param {String} loginInfo.email
@@ -29,4 +33,12 @@ export const loginUser = ({ email, password }) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+/**
+ * Logout user.
+ */
+export const logoutUser = () => (dispatch) => {
+  setAuthorizationHeader();
+  dispatch(clearCurrentUser());
 };
