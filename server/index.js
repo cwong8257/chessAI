@@ -11,6 +11,7 @@ const cors = require('cors');
 const passport = require('passport');
 
 const userRoutes = require('./routes/api/users');
+const gameRoutes = require('./routes/api/games');
 const configurePassport = require('./config/passport');
 
 const app = express();
@@ -25,33 +26,64 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/api', userRoutes);
+app.use('/api/games', gameRoutes);
 
 const server = http.Server(app);
 const io = socketIO(server);
 
-let userCount = 0;
-
 server.listen(process.env.PORT || 8080);
 
+let userCount = 0;
+const users = {};
+const games = {};
+
+// log count of users
+io.use((socket, next) => {
+  console.log('connected', ++userCount);
+  next();
+});
+
+// connect to game
+io.use((socket, next) => {
+  const { gameId } = socket.handshake.query;
+  console.log(gameId);
+
+  if (!games[gameId]) {
+    games[gameId] = {
+      player1: 'player1'
+    };
+    return next();
+  }
+
+  games[gameId].player2 = 'player2';
+
+  return next();
+});
+
 io.on('connection', (socket) => {
-  socket.join('game');
-  userCount++;
-  console.log('connected', userCount);
+  const gameId = socket.handshake.query.token;
+  console.log(games);
+
+  socket.join(gameId);
 
   socket.on('move', (gameState) => {
-    socket.to('game').emit('move', gameState);
+    socket.to(gameId).emit('move', gameState);
   });
 
   socket.on('message', ({ user, content }) => {
-    io.to('game').emit('message', {
+    const time = moment().format('h:mm a');
+
+    socket.to(gameId).emit('message', {
       user,
-      time: moment().format('h:mm a'),
+      time,
       content,
     });
   });
 
   socket.on('disconnect', () => {
-    userCount--;
-    console.log('disconnected', userCount);
+    const room = games[gameId];
+
+
+    console.log('disconnected', --userCount);
   });
 });

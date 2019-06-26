@@ -1,14 +1,17 @@
 import React from 'react';
 
+import gameService from '../../services/gameService';
+
 class Home extends React.Component {
   state = {}
 
-  handleOnClickHuman = (e) => {
-    // call endpoint for playing Human
-    // route to game
+  handlePlayHuman = async (e) => {
+    const { data } = await gameService.humanGame();
+    const { history } = this.props;
+    history.push(`/${data.gameId}`);
   }
 
-  handleOnClickMachine = (e) => {
+  handlePlayMachine = (e) => {
     // call endpoint for playing Machine
     // route to game
   }
@@ -21,10 +24,10 @@ class Home extends React.Component {
             <h2 className="text-center">Play</h2>
           </div>
           <div className="col-12 col-sm-6 text-center">
-            <button type="button" className="btn btn-primary btn-lg btn-block" onClick={this.handleOnClickHuman}>Human</button>
+            <button type="button" className="btn btn-primary btn-lg btn-block" onClick={this.handlePlayHuman}>Human</button>
           </div>
           <div className="col-12 col-sm-6 text-center">
-            <button type="button" className="btn btn-primary btn-lg btn-block" onClick={this.handleOnClickMachine}>Machine</button>
+            <button type="button" className="btn btn-primary btn-lg btn-block" onClick={this.handlePlayMachine}>Machine</button>
           </div>
         </div>
       </div>

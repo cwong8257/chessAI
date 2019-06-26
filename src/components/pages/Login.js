@@ -21,7 +21,7 @@ class Login extends React.Component {
     const { loginUser, history } = this.props;
 
     await loginUser({ email, password });
-    history.push('/home');
+    history.push('/');
   }
 
   render() {

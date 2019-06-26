@@ -1,12 +1,13 @@
 import socketIO from 'socket.io-client';
 
-const socket = socketIO.connect('http://localhost:8080');
+class ChessSocket {
+  constructor({ userId, gameId }) {
+    this.socket = socketIO.connect(`http://localhost:8080?userId=${userId}gameId=${gameId}`);
+  }
 
-function makeMove(move) {
-  return socket.emit('move', move);
+  makeMove(move) {
+    this.socket.emit('move', move);
+  }
 }
 
-export default {
-  socket,
-  makeMove
-};
+export default ChessSocket;
