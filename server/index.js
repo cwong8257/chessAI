@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
+const { Chess } = require('chess.js');
+
 
 const userRoutes = require('./routes/api/users');
 const gameRoutes = require('./routes/api/games');
@@ -46,11 +48,11 @@ io.use((socket, next) => {
 // connect to game
 io.use((socket, next) => {
   const { gameId } = socket.handshake.query;
-  console.log(gameId);
 
   if (!games[gameId]) {
     games[gameId] = {
-      player1: 'player1'
+      player1: 'player1',
+      game: new Chess()
     };
     return next();
   }
@@ -61,13 +63,13 @@ io.use((socket, next) => {
 });
 
 io.on('connection', (socket) => {
-  const gameId = socket.handshake.query.token;
-  console.log(games);
+  const { gameId } = socket.handshake.query;
 
   socket.join(gameId);
 
-  socket.on('move', (gameState) => {
-    socket.to(gameId).emit('move', gameState);
+  socket.on('move', (move) => {
+    games[gameId].game.move(move);
+    socket.to(gameId).emit('move', move);
   });
 
   socket.on('message', ({ user, content }) => {

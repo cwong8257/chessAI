@@ -2,44 +2,43 @@ import React from 'react';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 
-import socketService from '../../services/socketService';
-
-const game = new Chess();
+const chess = new Chess();
 
 class ChessLogic extends React.Component {
   state = { fen: 'start' };
 
   componentDidMount() {
-    socketService.socket.on('move', (move) => {
-      game.move(move);
-      const fen = game.fen();
+    const { socket } = this.props;
+
+    socket.on('move', (move) => {
+      console.log(move);
+      chess.move(move);
+      const fen = chess.fen();
       this.setState({ fen });
     });
   }
 
-  calcWidth = ({ screenWidth, screenHeight }) => Math.min(screenWidth, screenHeight) * 2 / 3;
-
   onDrop = ({ sourceSquare, targetSquare }) => {
-    const move = game.move({
+    const { socket } = this.props;
+
+    const move = chess.move({
       from: sourceSquare,
       to: targetSquare,
       promotion: 'q',
     });
 
-    console.log(move);
-
     if (move === null) return;
 
-    const fen = game.fen();
+    const fen = chess.fen();
 
-    socketService.makeMove(move);
+    socket.emit('move', move);
     this.setState({ fen });
   };
 
   render() {
     const { fen } = this.state;
 
-    return <Chessboard id="chessBoard" calcWidth={this.calcWidth} position={fen} onDrop={this.onDrop} />;
+    return <Chessboard id="chessBoard" position={fen} onDrop={this.onDrop} />;
   }
 }
 

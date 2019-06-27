@@ -11,7 +11,7 @@ function AppRouter() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
-        <Route path="*" component={Game} />
+        <Route path="/:gameId" component={Game} />
       </Switch>
     </div>
   );
