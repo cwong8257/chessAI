@@ -52,7 +52,7 @@ io.use((socket, next) => {
   if (!games[gameId]) {
     games[gameId] = {
       player1: 'player1',
-      game: new Chess()
+      chess: new Chess()
     };
     return next();
   }
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
   socket.join(gameId);
 
   socket.on('move', (move) => {
-    games[gameId].game.move(move);
+    games[gameId].chess.move(move);
     socket.to(gameId).emit('move', move);
   });
 
@@ -82,9 +82,14 @@ io.on('connection', (socket) => {
     });
   });
 
+  socket.on('loadGame', () => {
+    const pgn = games[gameId].chess.pgn();
+
+    socket.emit('sendGame', pgn);
+  });
+
   socket.on('disconnect', () => {
     const room = games[gameId];
-
 
     console.log('disconnected', --userCount);
   });

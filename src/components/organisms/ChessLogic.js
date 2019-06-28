@@ -5,17 +5,26 @@ import Chessboard from 'chessboardjsx';
 const chess = new Chess();
 
 class ChessLogic extends React.Component {
-  state = { fen: 'start' };
+  state = {
+    fen: 'start'
+  };
 
   componentDidMount() {
     const { socket } = this.props;
 
+    socket.on('sendGame', (pgn) => {
+      chess.load_pgn(pgn);
+      const fen = chess.fen();
+      this.setState({ fen });
+    });
+
     socket.on('move', (move) => {
-      console.log(move);
       chess.move(move);
       const fen = chess.fen();
       this.setState({ fen });
     });
+
+    socket.emit('loadGame');
   }
 
   onDrop = ({ sourceSquare, targetSquare }) => {
