@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import ChessLogic from '../organisms/ChessLogic';
+import HumanGame from '../organisms/HumanGame';
+import MachineGame from '../organisms/MachineGame';
 import Chat from '../organisms/Chat';
 import socketService from '../../services/socketService';
+import { MODES } from '../../constants';
 
 class Game extends React.Component {
   state = { socket: '' }
@@ -22,14 +25,24 @@ class Game extends React.Component {
 
   render() {
     const { socket } = this.state;
+    const { mode } = this.props;
+    const game = {
+      [MODES.HUMAN]: <HumanGame socket={socket} />,
+      [MODES.MACHINE]: <MachineGame />
+    }[mode];
+    const chat = mode === MODES.HUMAN && <Chat socket={socket} />;
 
     return (
       <div className="game">
-        <ChessLogic socket={socket} />
-        <Chat socket={socket} />
+        {game}
+        {chat}
       </div>
     );
   }
 }
 
-export default Game;
+const mapStateToProps = ({ game }) => ({
+  mode: game.mode
+});
+
+export default connect(mapStateToProps)(Game);

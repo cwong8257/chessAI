@@ -11,4 +11,12 @@ router.post('/human', (req, res) => {
   });
 });
 
+router.post('/machine', (req, res) => {
+  const gameId = shortid.generate();
+
+  return res.json({
+    gameId
+  });
+});
+
 module.exports = router;

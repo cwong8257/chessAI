@@ -4,7 +4,7 @@ import Chessboard from 'chessboardjsx';
 
 const chess = new Chess();
 
-class ChessLogic extends React.Component {
+class HumanGame extends React.Component {
   state = {
     fen: 'start'
   };
@@ -51,4 +51,4 @@ class ChessLogic extends React.Component {
   }
 }
 
-export default ChessLogic;
+export default HumanGame;

@@ -1,19 +1,29 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import gameService from '../../services/gameService';
+import { initiateHumanGame, initiateMachineGame } from '../../actions/gameActions';
 
 class Home extends React.Component {
   state = {}
 
   handlePlayHuman = async (e) => {
-    const { data } = await gameService.humanGame();
-    const { history } = this.props;
-    history.push(`/${data.gameId}`);
+    const { initiateHumanGame } = this.props;
+
+    await initiateHumanGame();
+
+    const { gameId, history } = this.props;
+
+    history.push(`/${gameId}`);
   }
 
-  handlePlayMachine = (e) => {
-    // call endpoint for playing Machine
-    // route to game
+  handlePlayMachine = async (e) => {
+    const { initiateMachineGame } = this.props;
+
+    await initiateMachineGame();
+
+    const { gameId, history } = this.props;
+
+    history.push(`/${gameId}`);
   }
 
   render() {
@@ -24,10 +34,22 @@ class Home extends React.Component {
             <h2 className="text-center">Play</h2>
           </div>
           <div className="col-12 col-sm-6 text-center">
-            <button type="button" className="btn btn-primary btn-lg btn-block" onClick={this.handlePlayHuman}>Human</button>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg btn-block"
+              onClick={this.handlePlayHuman}
+            >
+              Human
+            </button>
           </div>
           <div className="col-12 col-sm-6 text-center">
-            <button type="button" className="btn btn-primary btn-lg btn-block" onClick={this.handlePlayMachine}>Machine</button>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg btn-block"
+              onClick={this.handlePlayMachine}
+            >
+              Machine
+            </button>
           </div>
         </div>
       </div>
@@ -35,5 +57,13 @@ class Home extends React.Component {
   }
 }
 
+const mapStateToProps = ({ game }) => ({
+  gameId: game.gameId
+});
 
-export default Home;
+const mapDispatchToProps = {
+  initiateHumanGame,
+  initiateMachineGame
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

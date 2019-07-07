@@ -1,16 +1,15 @@
-import POINTS from '../constants';
+import { POINTS } from '../constants';
 
 class Engine {
   constructor(game) {
     this.game = game;
   }
 
-  calculateBestMove() {
+  async calculateBestMove() {
     const { game } = this;
     let bestMove;
     let bestEvaluation = Infinity;
     const moves = game.moves();
-    console.log(moves);
 
     for (let i = 0; i < moves.length; i++) {
       const move = moves[i];
