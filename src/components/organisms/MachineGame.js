@@ -2,36 +2,63 @@ import React from 'react';
 import Chess from 'chess.js';
 import Chessboard from 'chessboardjsx';
 
-import Engine from '../../engine';
-
+let chessWorker;
 const chess = new Chess();
-const engine = new Engine(chess);
 
-class MachineGamwe extends React.Component {
+class MachineGame extends React.Component {
   state = {
     fen: 'start'
   };
 
-  onDrop = async ({ sourceSquare, targetSquare }) => {
-    const move = chess.move({
+  componentWillMount = () => {
+    chessWorker = new Worker('chess.js');
+
+    chessWorker.onmessage = (e) => {
+      switch (e.data.type) {
+        case 'move': {
+          const move = e.data.payload;
+
+          chess.move(move);
+
+          if (!move) return;
+
+          const fen = chess.fen();
+          this.setState({ fen });
+          break;
+        }
+
+        default:
+          break;
+      }
+    };
+  }
+
+  makeComputerMove = () => {
+    chessWorker.postMessage({
+      type: 'makeComputerMove',
+      payload: { depth: 2, isWhite: false }
+    });
+  }
+
+  onDrop = ({ sourceSquare, targetSquare }) => {
+    const moveDetails = {
       from: sourceSquare,
       to: targetSquare,
       promotion: 'q',
+    };
+
+    const move = chess.move(moveDetails);
+
+    if (!move) return;
+
+    chessWorker.postMessage({
+      type: 'move',
+      payload: moveDetails
     });
 
-    if (move === null) return;
+    const fen = chess.fen();
 
-    this.setState({
-      fen: chess.fen()
-    });
-
-    const machineMove = await engine.calculateBestMove();
-
-    chess.move(machineMove);
-
-    this.setState({
-      fen: chess.fen()
-    });
+    this.setState({ fen }, this.makeComputerMove);
   };
 
   render() {
@@ -41,4 +68,4 @@ class MachineGamwe extends React.Component {
   }
 }
 
-export default MachineGamwe;
+export default MachineGame;

@@ -1,4 +1,9 @@
 
+export const COLORS = {
+  WHITE: 'w',
+  BLACK: 'b'
+};
+
 export const MODES = {
   HUMAN: 'HUMAN',
   MACHINE: 'MACHINE'

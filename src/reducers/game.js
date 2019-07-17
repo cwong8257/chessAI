@@ -1,6 +1,8 @@
+import { MODES } from '../constants';
+
 const initialState = {
   gameId: '',
-  mode: ''
+  mode: MODES.HUMAN
 };
 
 export default (state = initialState, action) => {
